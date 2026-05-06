@@ -12,3 +12,4 @@ CREATE TABLE articles (
 INSERT INTO articles (destination, pays, date_voyage, recit, emoji) VALUES
 ('Tokyo', 'Japon', '2024-03-15', 'Ville incroyable, mélange de tradition et modernité. Les temples shintoïstes côtoient les gratte-ciels.', '🇯🇵'),
 ('Lisbonne', 'Portugal', '2024-07-20', 'La ville aux 7 collines. Les tramways, les azulejos et les pastéis de nata... inoubliable.', '🇵🇹');
+
