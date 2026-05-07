@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🗺️ Mon carnet de voyages</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>🗺️ Mon carnet de voyages</h1>
+      <p>Chaque voyage est une nouvelle histoire à raconter</p>
+    </header>
+
+    <main>
+      <!-- ZONE 1 : Formulaire pour publier un voyage -->
+      <section id="zone-formulaire">
+        <h2>✏️ Ajouter un voyage</h2>
+        <form id="form-voyage">
+          <div class="champ">
+            <label for="destination">Destination</label>
+            <input
+              type="text"
+              id="destination"
+              placeholder="Ex : Rome"
+              required
+            />
+          </div>
+          <div class="champ">
+            <label for="pays">Pays</label>
+            <input type="text" id="pays" placeholder="Ex : Italie" required />
+          </div>
+          <div class="champ">
+            <label for="date_voyage">Date du voyage</label>
+            <input type="date" id="date_voyage" required />
+          </div>
+          <div class="champ">
+            <label for="emoji">Drapeau / Emoji</label>
+            <input type="text" id="emoji" placeholder="Ex : 🇮🇹" maxlength="4" />
+          </div>
+          <div class="champ">
+            <label for="recit">Mon récit de voyage</label>
+            <textarea
+              id="recit"
+              rows="5"
+              placeholder="Raconte ton voyage..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit">✈️ Publier ce voyage</button>
+          <p id="message-retour"></p>
+          <!-- Message de confirmation -->
+        </form>
+      </section>
+
+      <!-- ZONE 2 : Liste des voyages publiés -->
+      <section id="zone-articles">
+        <h2>📖 Mes voyages</h2>
+        <div id="liste-articles">Chargement...</div>
+      </section>
+    </main>
+
+    <footer><p>Mon carnet de voyages — 2025</p></footer>
+
+    <script src="app.js"></script>
+    <!-- JS en dernier ! -->
+  </body>
+</html>

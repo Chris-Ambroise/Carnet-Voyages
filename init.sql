@@ -1,4 +1,4 @@
-CREATE TABLE articles (
+ CREATE TABLE articles (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   destination VARCHAR(150) NOT NULL,
   pays        VARCHAR(100) NOT NULL,
