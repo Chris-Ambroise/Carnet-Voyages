@@ -1,6 +1,7 @@
 # Carnet de voyage
 
 Mini-projet réalisé dans le cadre de la Préqualification Métiers du Numérique à l’AFPA de Brest.
+ https://chris-ambroise.github.io/Carnet-Voyages/
 
 ## Objectif du projet
 Créer une application simple permettant d’afficher et d’ajouter des destinations de voyage.
