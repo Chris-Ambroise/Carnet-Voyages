@@ -1,18 +1,26 @@
-# Carnet de voyage
+# Carnet de Voyages
 
-Mini-projet réalisé dans le cadre de la Préqualification Métiers du Numérique à l’AFPA de Brest.
- https://chris-ambroise.github.io/Carnet-Voyages/
+## Description
+Projet réalisé dans le cadre de la Préqualification aux Métiers du Numérique à l'AFPA Brest.
 
-## Objectif du projet
-Créer une application simple permettant d’afficher et d’ajouter des destinations de voyage.
+Cette application permet de découvrir différentes destinations de voyage à travers une interface web simple et responsive.
 
 ## Technologies utilisées
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
-- API
-- SQL
+- API Fetch
+- PHP
+- MySQL
 
+## Fonctionnalités
+- Affichage de destinations
+- Récupération de données via API
+- Interface responsive
+- Gestion de données en base MySQL
+
+## Auteur
+Chris Ambroise Tshibangu
 ## Compétences travaillées
 - Structure d’une page web
 - Mise en forme avec CSS
