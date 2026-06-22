@@ -3,19 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🗺️ Mon carnet de voyages</title>
+    <title>Mon Carnet de Voyages</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
-    <header>
-      <h1>🗺️ Mon carnet de voyages</h1>
-      <p>Chaque voyage est une nouvelle histoire à raconter</p>
+    <header class="hero">
+      <div class="hero-content">
+        <span class="badge"
+          >Projet AFPA — HTML • CSS • JavaScript • PHP • MySQL</span
+        >
+        <h1>🗺️ Mon Carnet de Voyages</h1>
+        <p>
+          Une application web pour ajouter, afficher et gérer des souvenirs de
+          voyage.
+        </p>
+        <!--
+        <div class="stats">
+          <div class="stat">
+            <h3>HTML</h3>
+          </div>
+
+          <div class="stat">
+            <h3>CSS</h3>
+          </div>
+
+          <div class="stat">
+            <h3>JavaScript</h3>
+          </div>
+
+          <div class="stat">
+            <h3>PHP / MySQL</h3>
+          </div>
+        </div>
+      -->
+      </div>
     </header>
 
-    <main>
-      <!-- ZONE 1 : Formulaire pour publier un voyage -->
-      <section id="zone-formulaire">
-        <h2>✏️ Ajouter un voyage</h2>
+    <main class="container">
+      <!-- Formulaire pour publier un voyage -->
+      <section id="zone-formulaire" class="card form-card">
+        <h2>✈️ Ajouter un voyage</h2>
+        <p class="section-text">
+          Remplis le formulaire pour enregistrer une nouvelle destination.
+        </p>
+
         <form id="form-voyage">
           <div class="champ">
             <label for="destination">Destination</label>
@@ -26,19 +58,23 @@
               required
             />
           </div>
+
           <div class="champ">
             <label for="pays">Pays</label>
             <input type="text" id="pays" placeholder="Ex : Italie" required />
           </div>
+
           <div class="champ">
             <label for="date_voyage">Date du voyage</label>
             <input type="date" id="date_voyage" required />
           </div>
+
           <div class="champ">
             <label for="emoji">Drapeau / Emoji</label>
             <input type="text" id="emoji" placeholder="Ex : 🇮🇹" maxlength="4" />
           </div>
-          <div class="champ">
+
+          <div class="champ full">
             <label for="recit">Mon récit de voyage</label>
             <textarea
               id="recit"
@@ -47,22 +83,27 @@
               required
             ></textarea>
           </div>
-          <button type="submit">✈️ Publier ce voyage</button>
+
+          <button type="submit">Publier ce voyage</button>
           <p id="message-retour"></p>
-          <!-- Message de confirmation -->
         </form>
       </section>
 
-      <!-- ZONE 2 : Liste des voyages publiés -->
-      <section id="zone-articles">
-        <h2>📖 Mes voyages</h2>
+      <!-- Liste des voyages publiés -->
+      <section id="zone-articles" class="card articles-card">
+        <h2>🌍 Mes voyages</h2>
+        <p class="section-text">
+          Retrouve ici les voyages ajoutés dans ton carnet.
+        </p>
+
         <div id="liste-articles">Chargement...</div>
       </section>
     </main>
 
-    <footer><p>Mon carnet de voyages — 2025</p></footer>
+    <footer>
+      <p>Mon Carnet de Voyages — Projet réalisé par Chris Ambroise</p>
+    </footer>
 
     <script src="app.js"></script>
-    <!-- JS en dernier ! -->
   </body>
 </html>

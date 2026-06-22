@@ -1,3 +1,4 @@
+-- Active: 1778059005097@@127.0.0.1@3306
  CREATE TABLE articles (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   destination VARCHAR(150) NOT NULL,

@@ -3,7 +3,7 @@
 require_once 'db.php';
 
 header('Content-Type: application/json; charset=utf-8');
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
  
 // On autorise les requêtes depuis le même serveur (CORS)
@@ -48,5 +48,23 @@ elseif ($methode === 'POST') {
     http_response_code(201);
     echo json_encode(['message' => 'Article publié avec succès !',
                       'id'      => $pdo->lastInsertId()]);
+}
+// ─── CAS 3 : Supprimer un voyage ───────────────────────────────
+elseif ($methode === 'DELETE') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (empty($data['id'])) {
+        http_response_code(400);
+        echo json_encode(['erreur' => 'ID manquant']);
+        exit;
+    }
+
+    $sql = 'DELETE FROM articles WHERE id = :id';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':id' => $data['id']
+    ]);
+
+    echo json_encode(['message' => 'Voyage supprimé avec succès']);
 }
 ?>
