@@ -1,86 +1,105 @@
 // ─── URL de l'API (notre fichier PHP) ──────────────────────────
-const API_URL = 'http://localhost/carnet-voyages/api/articles.php';
+const API_URL = "http://localhost/carnet-voyages/api/articles.php";
+let articlesGlobaux = [];
 
 // ─── FONCTION 1 : Charger et afficher les articles ──────────────
 async function chargerArticles() {
-  const conteneur = document.getElementById('liste-articles');
-  conteneur.innerHTML = '<p>Chargement...</p>';
+  const conteneur = document.getElementById("liste-articles");
+  conteneur.innerHTML = "<p>Chargement...</p>";
 
   try {
     const reponse = await fetch(API_URL);
     const articles = await reponse.json();
+    articlesGlobaux = articles;
 
     if (articles.length === 0) {
-      conteneur.innerHTML = '<p>Aucun voyage publié pour l\'instant.</p>';
+      conteneur.innerHTML = "<p>Aucun voyage publié pour l'instant.</p>";
       return;
     }
 
-    conteneur.innerHTML = articles.map(article => `
-      <article class="carte-voyage">
-        <div class="carte-entete">
-          <span class="emoji">${article.emoji}</span>
-          <div>
-            <h3>${article.destination}, ${article.pays}</h3>
-            <p class="date">
-              Voyage du ${new Date(article.date_voyage).toLocaleDateString('fr-FR')}
-            </p>
-          </div>
-        </div>
-
-        <p class="recit">${article.recit}</p>
-
-        <button class="btn-delete" onclick="supprimerArticle(${article.id})">
-          🗑️ Supprimer
-        </button>
-      </article>
-    `).join('');
-
+    afficherArticles(articles);
   } catch (erreur) {
-    conteneur.innerHTML = '<p class="erreur">Impossible de charger les articles.</p>';
+    conteneur.innerHTML =
+      '<p class="erreur">Impossible de charger les articles.</p>';
     console.error(erreur);
   }
 }
+// ─── FONCTION : Afficher les articles à l'écran ─────────────────
+function afficherArticles(articles) {
+  const conteneur = document.getElementById("liste-articles");
+
+  if (articles.length === 0) {
+    conteneur.innerHTML = "<p>Aucun voyage trouvé.</p>";
+    return;
+  }
+
+  conteneur.innerHTML = articles
+    .map(
+      (article) => `
+    <article class="carte-voyage">
+      <div class="carte-entete">
+        <span class="emoji">${article.emoji}</span>
+
+        <div>
+          <h3>${article.destination}, ${article.pays}</h3>
+          <p class="date">
+            Voyage du ${new Date(article.date_voyage).toLocaleDateString("fr-FR")}
+          </p>
+        </div>
+      </div>
+
+      <p class="recit">${article.recit}</p>
+
+      <button class="btn-delete" onclick="supprimerArticle(${article.id})">
+        🗑️ Supprimer
+      </button>
+    </article>
+  `,
+    )
+    .join("");
+}
 
 // ─── FONCTION 2 : Publier un nouvel article ─────────────────────
-document.getElementById('form-voyage').addEventListener('submit', async (event) => {
-  event.preventDefault();
+document
+  .getElementById("form-voyage")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  const messageRetour = document.getElementById('message-retour');
-  messageRetour.textContent = 'Envoi en cours...';
+    const messageRetour = document.getElementById("message-retour");
+    messageRetour.textContent = "Envoi en cours...";
 
-  const donnees = {
-    destination: document.getElementById('destination').value,
-    pays: document.getElementById('pays').value,
-    date_voyage: document.getElementById('date_voyage').value,
-    recit: document.getElementById('recit').value,
-    emoji: document.getElementById('emoji').value || '✈️',
-  };
+    const donnees = {
+      destination: document.getElementById("destination").value,
+      pays: document.getElementById("pays").value,
+      date_voyage: document.getElementById("date_voyage").value,
+      recit: document.getElementById("recit").value,
+      emoji: document.getElementById("emoji").value || "✈️",
+    };
 
-  try {
-    const reponse = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(donnees)
-    });
+    try {
+      const reponse = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(donnees),
+      });
 
-    const resultat = await reponse.json();
+      const resultat = await reponse.json();
 
-    if (reponse.ok) {
-      messageRetour.textContent = '✅ ' + resultat.message;
-      event.target.reset();
-      chargerArticles();
-    } else {
-      messageRetour.textContent = '❌ Erreur : ' + resultat.erreur;
+      if (reponse.ok) {
+        messageRetour.textContent = "✅ " + resultat.message;
+        event.target.reset();
+        chargerArticles();
+      } else {
+        messageRetour.textContent = "❌ Erreur : " + resultat.erreur;
+      }
+    } catch (erreur) {
+      messageRetour.textContent = "❌ Erreur de connexion au serveur.";
     }
-
-  } catch (erreur) {
-    messageRetour.textContent = '❌ Erreur de connexion au serveur.';
-  }
-});
+  });
 
 // ─── FONCTION 3 : Supprimer un article ──────────────────────────
 async function supprimerArticle(id) {
-  const confirmation = confirm('Voulez-vous vraiment supprimer ce voyage ?');
+  const confirmation = confirm("Voulez-vous vraiment supprimer ce voyage ?");
 
   if (!confirmation) {
     return;
@@ -88,25 +107,36 @@ async function supprimerArticle(id) {
 
   try {
     const reponse = await fetch(API_URL, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: id })
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: id }),
     });
 
     const resultat = await reponse.json();
 
     if (reponse.ok) {
-      alert('✅ ' + resultat.message);
+      alert("✅ " + resultat.message);
       chargerArticles();
     } else {
-      alert('❌ Erreur : ' + resultat.erreur);
+      alert("❌ Erreur : " + resultat.erreur);
     }
-
   } catch (erreur) {
-    alert('❌ Erreur de connexion au serveur.');
+    alert("❌ Erreur de connexion au serveur.");
     console.error(erreur);
   }
 }
+// ─── FONCTION 4 : Rechercher par pays ou destination ─────────────
+document.getElementById("recherche").addEventListener("input", (event) => {
+  const texte = event.target.value.toLowerCase();
+
+  const resultats = articlesGlobaux.filter(
+    (article) =>
+      article.pays.toLowerCase().includes(texte) ||
+      article.destination.toLowerCase().includes(texte),
+  );
+
+  afficherArticles(resultats);
+});
 
 // ─── DÉMARRAGE : on charge les articles dès l'ouverture de la page ─
 chargerArticles();

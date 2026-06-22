@@ -282,3 +282,27 @@ footer {
   transform: translateY(-3px);
   background: rgba(139, 92, 246, 0.25);
 }
+
+/* ─ Recherche ─────────────────────────────────── */
+
+#recherche {
+  width: 100%;
+  padding: 13px 15px;
+  margin-bottom: 22px;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  font-size: 15px;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+#recherche::placeholder {
+  color: #64748b;
+}
+
+#recherche:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+}
