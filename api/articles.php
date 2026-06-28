@@ -3,7 +3,7 @@
 require_once 'db.php';
 
 header('Content-Type: application/json; charset=utf-8');
-header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
  
 // On autorise les requêtes depuis le même serveur (CORS)
@@ -49,7 +49,39 @@ elseif ($methode === 'POST') {
     echo json_encode(['message' => 'Article publié avec succès !',
                       'id'      => $pdo->lastInsertId()]);
 }
-// ─── CAS 3 : Supprimer un voyage ───────────────────────────────
+
+// ─── CAS 3 : Modifier un voyage ───────────────────────────────
+elseif ($methode === 'PUT') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (empty($data['id']) || empty($data['destination']) || empty($data['pays']) ||
+        empty($data['date_voyage']) || empty($data['recit'])) {
+        http_response_code(400);
+        echo json_encode(['erreur' => 'Tous les champs sont obligatoires']);
+        exit;
+    }
+
+    $sql = 'UPDATE articles
+            SET destination = :destination,
+                pays = :pays,
+                date_voyage = :date_voyage,
+                recit = :recit,
+                emoji = :emoji
+            WHERE id = :id';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':id'          => $data['id'],
+        ':destination' => htmlspecialchars($data['destination']),
+        ':pays'        => htmlspecialchars($data['pays']),
+        ':date_voyage' => $data['date_voyage'],
+        ':recit'       => htmlspecialchars($data['recit']),
+        ':emoji'       => $data['emoji'] ?? '✈️',
+    ]);
+
+    echo json_encode(['message' => 'Voyage modifié avec succès']);
+}
+// ─── CAS 4 : Supprimer un voyage ───────────────────────────────
 elseif ($methode === 'DELETE') {
     $data = json_decode(file_get_contents('php://input'), true);
 

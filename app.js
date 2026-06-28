@@ -1,6 +1,7 @@
 // ─── URL de l'API (notre fichier PHP) ──────────────────────────
 const API_URL = "http://localhost/carnet-voyages/api/articles.php";
 let articlesGlobaux = [];
+let articleEnCours = null;
 
 // ─── FONCTION 1 : Charger et afficher les articles ──────────────
 async function chargerArticles() {
@@ -50,16 +51,22 @@ function afficherArticles(articles) {
 
       <p class="recit">${article.recit}</p>
 
-      <button class="btn-delete" onclick="supprimerArticle(${article.id})">
-        🗑️ Supprimer
-      </button>
+      <div class="actions">
+  <button class="btn-edit" onclick="modifierArticle(${article.id})">
+    ✏️ Modifier
+  </button>
+
+  <button class="btn-delete" onclick="supprimerArticle(${article.id})">
+    🗑️ Supprimer
+  </button>
+</div>
     </article>
   `,
     )
     .join("");
 }
 
-// ─── FONCTION 2 : Publier un nouvel article ─────────────────────
+// ─── FONCTION 2 : Publier ou modifier un article ─────────────────
 document
   .getElementById("form-voyage")
   .addEventListener("submit", async (event) => {
@@ -69,6 +76,7 @@ document
     messageRetour.textContent = "Envoi en cours...";
 
     const donnees = {
+      id: articleEnCours,
       destination: document.getElementById("destination").value,
       pays: document.getElementById("pays").value,
       date_voyage: document.getElementById("date_voyage").value,
@@ -76,9 +84,11 @@ document
       emoji: document.getElementById("emoji").value || "✈️",
     };
 
+    const methode = articleEnCours ? "PUT" : "POST";
+
     try {
       const reponse = await fetch(API_URL, {
-        method: "POST",
+        method: methode,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(donnees),
       });
@@ -88,12 +98,18 @@ document
       if (reponse.ok) {
         messageRetour.textContent = "✅ " + resultat.message;
         event.target.reset();
+
+        articleEnCours = null;
+        document.querySelector('button[type="submit"]').textContent =
+          "✈️ Publier ce voyage";
+
         chargerArticles();
       } else {
         messageRetour.textContent = "❌ Erreur : " + resultat.erreur;
       }
     } catch (erreur) {
       messageRetour.textContent = "❌ Erreur de connexion au serveur.";
+      console.error(erreur);
     }
   });
 
@@ -124,6 +140,33 @@ async function supprimerArticle(id) {
     alert("❌ Erreur de connexion au serveur.");
     console.error(erreur);
   }
+}
+
+// ─── FONCTION 5 : Modifier un article ──────────────────────────
+
+function modifierArticle(id) {
+  const article = articlesGlobaux.find((a) => a.id == id);
+
+  if (!article) return;
+
+  articleEnCours = id;
+  document.querySelector('button[type="submit"]').textContent =
+    "✅ Mettre à jour le voyage";
+
+  document.getElementById("destination").value = article.destination;
+
+  document.getElementById("pays").value = article.pays;
+
+  document.getElementById("date_voyage").value = article.date_voyage;
+
+  document.getElementById("emoji").value = article.emoji;
+
+  document.getElementById("recit").value = article.recit;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 }
 // ─── FONCTION 4 : Rechercher par pays ou destination ─────────────
 document.getElementById("recherche").addEventListener("input", (event) => {
